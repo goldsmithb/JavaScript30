@@ -59,6 +59,30 @@
 
 <script>
 
+function playSound(e) {
+  // grab the audio that corresponds to the keyCode
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"`);
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"`);
+  //console.log(audio); // LOG
+  //console.log(key); // LOG
+  if (!audio) return;
+  // if play() method is called on an element that is already playing
+  // it won't play. So we want to rewind the audio to beginning
+  // on each key press
+  audio.currentTime = 0;
+  audio.play();
+  key.classList.add('playing');
+}
+
+function removeTransition(e) {
+  if (e.propertyName !== 'transform') return;
+  this.classList.remove('playing');
+}
+
+const keys = document.querySelectorAll('.key');
+keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
+window.addEventListener('keydown', playSound);
+
 </script>
 
 
